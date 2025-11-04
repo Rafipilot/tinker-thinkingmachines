@@ -119,7 +119,7 @@ def main(config: Config):
             ml_logger.log_metrics(metrics=metrics, step=step)
 
     # Save final checkpoint
-    name = "rafi-test05"
+    name = "rafi-test06"
     sampling_path = training_client.save_weights_for_sampler(name=name).result().path
  
     # Create a sampling client with that checkpoint
@@ -128,7 +128,9 @@ def main(config: Config):
         
         to_add = {"name": name, "sampling path": sampling_path}
         data.append(to_add)
-        json.dump(data, f)
+        f.seek(0)           # go back to start
+        json.dump(data, f, indent=2)
+        f.truncate()        
 
     sampling_client = service_client.create_sampling_client(model_path=sampling_path) #
 

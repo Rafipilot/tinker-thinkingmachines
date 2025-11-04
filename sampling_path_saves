@@ -1,1 +1,14 @@
-[{"name": "rafi-test05", "sampling path": "tinker://8dbf6113-9676-4592-b7ac-abfcd7810d37/sampler_weights/rafi-test05"}, {"name": "rafi-test05", "sampling path": "tinker://193e7162-5710-46bb-be19-c25a8fcbb7d2/sampler_weights/rafi-test05"}]
+[
+  {
+    "name": "rafi-test05",
+    "sampling path": "tinker://8dbf6113-9676-4592-b7ac-abfcd7810d37/sampler_weights/rafi-test05"
+  },
+  {
+    "name": "rafi-test05",
+    "sampling path": "tinker://193e7162-5710-46bb-be19-c25a8fcbb7d2/sampler_weights/rafi-test05"
+  },
+  {
+    "name": "rafi-test06",
+    "sampling path": "tinker://5027304f-b9c8-429b-af56-427f87f3d706/sampler_weights/rafi-test06"
+  }
+]
