@@ -1,7 +1,6 @@
 import logging
 import time
 
-import chz
 import datasets
 import tinker
 from tinker import types
@@ -10,7 +9,7 @@ from tinker_cookbook.supervised.common import compute_mean_nll
 from tinker_cookbook.supervised.data import conversation_to_datum
 from tinker_cookbook.tokenizer_utils import get_tokenizer
 from tinker_cookbook.utils import ml_log
-from datasets import load
+import json
 
 import math
 import os 
@@ -21,18 +20,17 @@ logger = logging.getLogger(__name__)
 logging.getLogger("httpx").setLevel(logging.WARN)
 
 
-@chz.chz
 class Config:
-    base_url: str | None = None
-    log_path: str = "/tmp/tinker-examples/sl-loop"
-    model_name: str = "meta-llama/Llama-3.1-8B"
-    batch_size: int = 128
-    learning_rate: float = 1e-4
-    max_length: int = 32768
-    train_on_what: renderers.TrainOnWhat = renderers.TrainOnWhat.ALL_ASSISTANT_MESSAGES
-    lora_rank: int = 32
-    save_every: int = 20
-
+    def __init__(self):
+        self.base_url = None
+        self.log_path = "/tmp/tinker-examples/sl-loop"
+        self.model_name = "meta-llama/Llama-3.1-8B"
+        self.batch_size = 128
+        self.learning_rate = 1e-4
+        self.max_length = 32768
+        self.train_on_what = renderers.TrainOnWhat.ALL_ASSISTANT_MESSAGES
+        self.lora_rank = 32
+        self.save_every = 20
 
 def main(config: Config):
     ml_logger = ml_log.setup_logging(
@@ -54,7 +52,7 @@ def main(config: Config):
     
     service_client = tinker.ServiceClient(base_url = config.base_url)
 
-    resume_info = False # scheckpoint_utils.get_last_checkpoint(config.log_path)
+    resume_info = False # im training everytime 
     if resume_info:
         training_client = service_client.create_training_client_from_state(
             resume_info["state_path"]
@@ -70,13 +68,13 @@ def main(config: Config):
     train_dataset = train_dataset.shuffle(seed=0)
 
     print("Starting training, num batches: ", n_train_batches)
-    for i in range(6): # since my custom dataset is tiny im doing 6 epochs
+    for i in range(6): # since my custom dataset is tiny im doing 6 epochs to ensure a meaningful change in weights
         for batch_idx in range (start_batch, n_train_batches):
             start_time = time.time()
             step = batch_idx
             metrics = {}
 
-            lr_mult = max(0, 1-step/n_train_batches)
+            lr_mult = max(0, 1-step/n_train_batches) # decaying lr
             current_lr = config.learning_rate * lr_mult
             adam_params = tinker.AdamParams (learning_rate=current_lr, beta1 = 0.9, beta2=0.95, eps=1e-8)
 
@@ -121,14 +119,25 @@ def main(config: Config):
             ml_logger.log_metrics(metrics=metrics, step=step)
 
     # Save final checkpoint
-    sampling_client = training_client.save_weights_and_get_sampling_client(name="Rafi-test04")
+    name = "rafi-test05"
+    sampling_path = training_client.save_weights_for_sampler(name=name).result().path
+ 
+    # Create a sampling client with that checkpoint
+    with open("sampling_path_saves", "r+") as f:
+        data = json.load(f)
+        
+        to_add = {"name": name, "sampling path": sampling_path}
+        data.append(to_add)
+        json.dump(data, f)
+
+    sampling_client = service_client.create_sampling_client(model_path=sampling_path) #
 
     message = [{"role": "user", "content": "What are Newton’s three laws of motion?"
     }]
     prompt = renderer.build_generation_prompt(message) # hopefully this will return the prompt
     
     sampling_params = types.SamplingParams(
-        max_tokens=50,
+        max_tokens=200,
         temperature=0.7,
         top_p=0.95,
 
@@ -148,10 +157,11 @@ def main(config: Config):
         kind="both",
         loop_state={"batch": n_train_batches},
     )
-    return training_client, tokenizer
+    return 
 
 if __name__ == "__main__":
-    chz.nested_entrypoint(main)
+    config = Config()
+    main(config)
 
 
 #tinker_cookbook.checkpoint_utils:75 [INFO] Saved checkpoints: {'state_path': 'tinker://7c7cb23a-775a-4da8-9978-a2c4ed4ee310/weights/final', 'sampler_path': 'tinker://7c7cb23a-775a-4da8-9978-a2c4ed4ee310/sampler_weights/final'}
