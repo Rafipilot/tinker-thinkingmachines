@@ -5,7 +5,7 @@ from config import tinker_api_key
 import os
 os.environ["TINKER_API_KEY"] = tinker_api_key
 
-model_name ="meta-llama/Llama-3.1-8B"
+model_name ="meta-llama/Llama-3.2-1B"
 checkpoint = ""
 
 tokenizer = tokenizer_utils.get_tokenizer(model_name)
@@ -14,15 +14,16 @@ renderer = renderers.get_renderer(renderer_name, tokenizer)
 
 service_client = tinker.ServiceClient()
 
-sampling_client = service_client.create_sampling_client(model_path="tinker://8dbf6113-9676-4592-b7ac-abfcd7810d37/sampler_weights/rafi-test05")
+sampling_client = service_client.create_sampling_client(model_path="tinker://3a7a8e97-4358-4d3f-af94-6388a866b909/sampler_weights/rafi-dpo-test4-working")
 
-message = [{"role": "user", "content": "What are Newton’s three laws of motion?"
+message = [{"role": "user", "content": "What is the best way to make a sandwich?"
 }]
 prompt = renderer.build_generation_prompt(message) # hopefully this will return the prompt
+print("prompt: ", prompt)
 
 sampling_params = types.SamplingParams(
-    max_tokens=200,
-    temperature=0.7,
+    max_tokens=50,
+    temperature=0.8,
     top_p=0.95,
 
 )

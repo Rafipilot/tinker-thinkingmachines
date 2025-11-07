@@ -10,5 +10,49 @@
   {
     "name": "rafi-test06",
     "sampling path": "tinker://5027304f-b9c8-429b-af56-427f87f3d706/sampler_weights/rafi-test06"
+  },
+  {
+    "name": "rafi-test06",
+    "sampling path": "tinker://5ce89ea6-0ca9-4d10-91d8-ce8398eaf3c5/sampler_weights/rafi-test06"
+  },
+  {
+    "name": "Rafi-DPO-Testttt",
+    "sampling path": "tinker://5cb45b4a-416a-4f39-9422-c9fb031ca4f4/sampler_weights/Rafi-DPO-Testttt"
+  },
+  {
+    "name": "Rafi-DPO-Testttt",
+    "sampling path": "tinker://32228cc2-e10d-44d2-b1b0-46d4155bd37d/sampler_weights/Rafi-DPO-Testttt"
+  },
+  {
+    "name": "rafi-dpo-test2",
+    "sampling path": "tinker://55605894-4257-4336-9ed3-792b2e440e4e/sampler_weights/rafi-dpo-test2"
+  },
+  {
+    "name": "rafi-dpo-test2",
+    "sampling path": "tinker://fe53bb18-f3f0-4af1-8129-12122e789282/sampler_weights/rafi-dpo-test2"
+  },
+  {
+    "name": "rafi-dpo-test2",
+    "sampling path": "tinker://ce3dab7a-2853-4e1b-a2f5-8454f5bd1376/sampler_weights/rafi-dpo-test2"
+  },
+  {
+    "name": "rafi-dpo-test3",
+    "sampling path": "tinker://31d51570-83a1-4287-a5c4-108ac934a917/sampler_weights/rafi-dpo-test3"
+  },
+  {
+    "name": "rafi-dpo-test3",
+    "sampling path": "tinker://96bdc506-5548-49fe-8a74-1091088210c4/sampler_weights/rafi-dpo-test3"
+  },
+  {
+    "name": "rafi-dpo-test3",
+    "sampling path": "tinker://32ba7bba-0cbd-4927-a302-c34103f24ca3/sampler_weights/rafi-dpo-test3"
+  },
+  {
+    "name": "rafi-dpo-test3",
+    "sampling path": "tinker://e916075d-6ed9-4aee-861c-14fe5095e087/sampler_weights/rafi-dpo-test3"
+  },
+  {
+    "name": "rafi-dpo-test4-working",
+    "sampling path": "tinker://3a7a8e97-4358-4d3f-af94-6388a866b909/sampler_weights/rafi-dpo-test4-working"
   }
 ]
