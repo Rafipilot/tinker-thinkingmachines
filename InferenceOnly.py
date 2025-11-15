@@ -16,10 +16,9 @@ service_client = tinker.ServiceClient()
 
 sampling_client = service_client.create_sampling_client(model_path="tinker://3a7a8e97-4358-4d3f-af94-6388a866b909/sampler_weights/rafi-dpo-test4-working")
 
-message = [{"role": "user", "content": "What is the best way to make a sandwich?"
+message = [{"role": "user", "content": "How to live a meaningful life?"
 }]
-prompt = renderer.build_generation_prompt(message) # hopefully this will return the prompt
-print("prompt: ", prompt)
+prompt = renderer.build_generation_prompt(message)
 
 sampling_params = types.SamplingParams(
     max_tokens=50,
