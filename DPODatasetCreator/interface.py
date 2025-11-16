@@ -20,7 +20,7 @@ st.set_page_config("DPO Dataset Generation", layout="wide")
 
 
 # Load datasets
-with open("Choices_to_compare.json", "r", encoding="utf-8") as f:
+with open("DPODatasetCreator\Choices_to_compare.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
 sheet_id = "1K-vuVHxuEniSyWv4y0lHv5OZ-ohmpNSDDrKHh1aN2KE"
