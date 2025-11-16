@@ -1,33 +1,51 @@
 import streamlit as st
 import json
+import gspread
+from google.oauth2.service_account import Credentials
+
+# Convert secrets group into a dict
+sa_info = dict(st.secrets["gcp_service_account"])
+
+# gspread requires credentials as a dict; create Credentials
+creds = Credentials.from_service_account_info(sa_info, scopes=[
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"  # optional, only if you need Drive access
+])
+
+gc = gspread.authorize(creds)
 
 st.set_page_config("DPO Dataset Generation", layout="wide")
 
 # Initialize session state
-if "num_row" not in st.session_state:
-    st.session_state.num_row = 0
+
 
 # Load datasets
 with open("Choices_to_compare.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
-try:
-    with open("CreatedDatset.json", "r", encoding="utf-8") as f:
-        Markeddata = json.load(f)
-except:
-    Markeddata = []
+sheet_id = "1K-vuVHxuEniSyWv4y0lHv5OZ-ohmpNSDDrKHh1aN2KE"
+sh = gc.open_by_key(sheet_id)
+ws = sh.sheet1 
+
+Markeddata = ws.get_all_records()
+
+nums = ws.col_values(1)
+if "num_row" not in st.session_state:
+    nums = ws.col_values(1)
+    if len(nums) > 1:
+        last_number = int(nums[-1])
+    else:
+        last_number = 0  
+    st.session_state.num_row = last_number + 1
 
 st.title("DPO Dataset Generation for alek :)")
-st.write("Number of ungraded choices: ", len(data))
+st.write("Number of ungraded choices: ", len(data)- len(Markeddata))
 st.write("Number marked: ", len(Markeddata))
 
 def process_row(chosen, rejected):
-    # Save choice
-    Markeddata.append({"chosen": chosen, "rejected": rejected})
-    with open("CreatedDatset.json", "w", encoding="utf-8") as f:
-        json.dump(Markeddata, f, ensure_ascii=False, indent=2)
+
+    ws.append_row([st.session_state.num_row, chosen, rejected, ])
     
-    # Move to next row
     st.session_state.num_row += 1
 
 def show_row():
@@ -43,10 +61,10 @@ def show_row():
     with left:
         st.write(one)
         if st.button("Choose one"):
-            process_row(one, two)
+            process_row("1", "0")
     with right:
         st.write(two)
         if st.button("Choose two"):
-            process_row(two, one)
+            process_row("0", "1")
 
 show_row()
