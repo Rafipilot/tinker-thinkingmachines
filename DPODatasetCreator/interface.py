@@ -2,6 +2,7 @@ import streamlit as st
 import json
 import gspread
 from google.oauth2.service_account import Credentials
+import os
 
 # Convert secrets group into a dict
 sa_info = dict(st.secrets["gcp_service_account"])
@@ -20,7 +21,11 @@ st.set_page_config("DPO Dataset Generation", layout="wide")
 
 
 # Load datasets
-with open("DPODatasetCreator\Choices_to_compare.json", "r", encoding="utf-8") as f:
+
+script_dir = os.path.dirname(__file__)  # folder containing interface.py
+json_path = os.path.join(script_dir, "Choices_to_compare.json")
+
+with open(json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
 sheet_id = "1K-vuVHxuEniSyWv4y0lHv5OZ-ohmpNSDDrKHh1aN2KE"
