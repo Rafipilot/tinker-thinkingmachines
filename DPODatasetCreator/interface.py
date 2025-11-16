@@ -43,7 +43,7 @@ if "num_row" not in st.session_state:
         last_number = 0  
     st.session_state.num_row = last_number
 
-st.title("DPO Dataset Generation for alek :)")
+st.title("DPO Dataset Generation for M37")
 st.write("Number of ungraded choices: ", len(data)- len(Markeddata))
 st.write("Number marked: ", len(Markeddata))
 
