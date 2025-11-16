@@ -41,7 +41,7 @@ if "num_row" not in st.session_state:
         last_number = int(nums[-1])
     else:
         last_number = 0  
-    st.session_state.num_row = last_number + 1
+    st.session_state.num_row = last_number
 
 st.title("DPO Dataset Generation for alek :)")
 st.write("Number of ungraded choices: ", len(data)- len(Markeddata))
@@ -52,6 +52,10 @@ def process_row(chosen, rejected):
     ws.append_row([st.session_state.num_row, chosen, rejected, ])
     
     st.session_state.num_row += 1
+
+    st.rerun()
+    show_row()
+
 
 def show_row():
     if st.session_state.num_row >= len(data):
@@ -66,10 +70,10 @@ def show_row():
     with left:
         st.write(one)
         if st.button("Choose one"):
-            process_row("1", "0")
+            process_row(one, two)
     with right:
         st.write(two)
         if st.button("Choose two"):
-            process_row("0", "1")
+            process_row(two, one)
 
 show_row()
