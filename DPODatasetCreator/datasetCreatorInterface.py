@@ -31,16 +31,16 @@ if "num_row" not in st.session_state:
 script_dir = os.path.dirname(__file__)
 
 
-def generateResponse(ws, numExamples, model, systemPrompt, prompt):
+def generateResponse(ws, numExamples, model_1, model_2, systemPrompt, prompt):
     for i in range(numExamples):
         with st.spinner(f"Generating example {i+1}"):
             resp1 = client.responses.create(
-                model=model,
+                model=model_1,
                 input=prompt,
                 instructions=systemPrompt if systemPrompt else None,
             )
             resp2 = client.responses.create(
-                model=model,
+                model=model_2,
                 input=prompt,
                 instructions=systemPrompt if systemPrompt else None,
             )
@@ -98,7 +98,8 @@ with createDataTab:
         sh_create = gc.open_by_key(sheet_id)
         unmarkedData = sh_create.sheet1  # where pairs will be stored
 
-        model = st.selectbox("Choose a model:", ["gpt-5", "gpt-5.1", "gpt-5.1-mini", "o3-mini", "o4-mini","gpt-4.1"])
+        model_1 = st.selectbox("Choose a model:", ["gpt-5", "gpt-5.1", "gpt-5.1-mini", "o3-mini", "o4-mini","gpt-4.1"])
+        model_2 = st.selectbox("Choose a comparison model:", ["gpt-5", "gpt-5.1", "gpt-5.1-mini", "o3-mini", "o4-mini","gpt-4.1"])
         systemPrompt = st.text_area("System prompt")
         prompt = st.text_area("Prompt")
 
@@ -113,7 +114,8 @@ with createDataTab:
             generateResponse(
                 ws=unmarkedData,
                 numExamples=int(numGenerate),
-                model=model,
+                model_1=model_1,
+                model_2=model_2,
                 systemPrompt=systemPrompt,
                 prompt=prompt,
             )
