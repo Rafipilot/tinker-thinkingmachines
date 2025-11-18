@@ -33,7 +33,7 @@ script_dir = os.path.dirname(__file__)
 
 def generateResponse(ws, numExamples, model, systemPrompt, prompt):
     for i in range(numExamples):
-        with st.spinner(f"Generating example {i}"):
+        with st.spinner(f"Generating example {i+1}"):
             resp1 = client.responses.create(
                 model=model,
                 input=prompt,
@@ -48,7 +48,7 @@ def generateResponse(ws, numExamples, model, systemPrompt, prompt):
             text1 = resp1.output_text
             text2 = resp2.output_text
 
-            ws.append_row([i + 1, prompt, text1, text2])
+            ws.append_row([i + 1, prompt, systemPrompt, text1, text2])
 
 
 def process_row(ws_marked,num_row, chosen, rejected):
@@ -66,7 +66,7 @@ def show_row(ws_marked, data, num_row):
 
     row = data[num_row]
 
-    _, prompt_text, one, two = row[0], row[1], row[2], row[3]
+    _, prompt_text, sys_prompt, one, two = row[0], row[1], row[2], row[3], row[4]
 
     st.write(f"**Prompt:** {prompt_text}")
 
