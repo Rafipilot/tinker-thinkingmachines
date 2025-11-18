@@ -98,7 +98,7 @@ with createDataTab:
         sh_create = gc.open_by_key(sheet_id)
         unmarkedData = sh_create.sheet1  # where pairs will be stored
 
-        model = st.selectbox("Choose a model:", ["gpt-5"])
+        model = st.selectbox("Choose a model:", ["gpt-5", "gpt-5.1", "gpt-5.1-mini", "o3-mini", "o4-mini","gpt-4.1"])
         systemPrompt = st.text_area("System prompt")
         prompt = st.text_area("Prompt")
 
